@@ -11,6 +11,12 @@ export default class UsersController {
   public async create({ request }: HttpContextContract) {
     const { name, username, email }: IRequest = request.only(["name", "username", "email"]);
 
+    const checkUserAlreadyExists = await User.findBy('username', username);
+
+    if (checkUserAlreadyExists) {
+      throw new Error("User already exists");
+    }
+
     const user = await User.create({
       name,
       username,
