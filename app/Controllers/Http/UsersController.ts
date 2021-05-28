@@ -1,3 +1,4 @@
+import { Response } from '@adonisjs/core/build/standalone';
 import { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
 import User from 'App/Models/User';
 
@@ -8,7 +9,7 @@ interface IRequest {
 }
 
 export default class UsersController {
-  public async create({ request }: HttpContextContract) {
+  public async create({ request }: HttpContextContract): Promise<User> {
     const { name, username, email }: IRequest = request.only(["name", "username", "email"]);
 
     const checkUserAlreadyExists = await User.findBy('username', username);
@@ -26,11 +27,11 @@ export default class UsersController {
     return user;
   }
 
-  public async all() {
+  public async all(): Promise<User[]> {
     return await User.all();
   }
 
-  public async index({ request }: HttpContextContract) {
+  public async index({ request }: HttpContextContract): Promise<User> {
     const { id } = request.params();
 
     const user = await User.find(id);
@@ -42,7 +43,7 @@ export default class UsersController {
     return user;
   }
 
-  public async delete({ request }: HttpContextContract) {
+  public async delete({ request }: HttpContextContract): Promise<boolean> {
     const { id } = request.params();
 
     const user = await User.find(id);
