@@ -10,7 +10,7 @@ interface IRequest {
 
 export default class UsersController {
   public async create({ request }: HttpContextContract): Promise<User> {
-    const { name, username, email }: IRequest = request.only(["name", "username", "email"]);
+    const { name, username, email } = request.only(["name", "username", "email"]) as IRequest;
 
     const checkUserAlreadyExists = await User.findBy('username', username);
 
